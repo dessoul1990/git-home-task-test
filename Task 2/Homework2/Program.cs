@@ -7,14 +7,33 @@ namespace Homework2
     {
         static void Main(string[] args)
         {
-            LinkedLink linkedlist = new LinkedLink();
-            linkedlist.AddNodeToFront(5);
-            linkedlist.AddNodeToFront(32);
-            linkedlist.AddNodeToFront(52);
-            linkedlist.AddNodeToFront(15);
-            linkedlist.AddNodeToFront(78);
-            linkedlist.AddNodeToFront(3);                     
-            linkedlist.PrintList();
+            var cities = new LinkedList<string>();
+            cities.Add("Sydney");
+            cities.Add("Barcelona");
+            cities.Add("New York");
+            cities.Add("Tokyo");
+            cities.Add("Kyiv");
+            cities.Add("Paris");
+            cities.Add("Warsaw");
+            cities.Add("Madrid");
+            cities.Add("Rome");
+            
+
+            foreach (var city in cities)
+            {
+                Console.Write(city + " ");
+            }
+            Console.WriteLine();
+
+
+           cities.Delete("Paris");
+           cities.Delete("Rome");
+            foreach (var city in cities)
+            {
+                Console.Write(city + " ");
+            }
+            Console.WriteLine();
+            Console.ReadLine();
         }
         
     }

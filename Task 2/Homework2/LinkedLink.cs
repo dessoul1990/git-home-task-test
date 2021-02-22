@@ -1,56 +1,104 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Homework2
 {
-    class LinkedLink
+    class LinkedList<T> : IEnumerable<T>
     {
-        int count;
-        LinkedLinkNode head;
+        private DataItem<T> Head { get; set; }
+        private DataItem<T> LastNode { get; set; }
 
-        public LinkedLink()
+        public int Count { get; private set; }
+
+        public LinkedList()
         {
-            head = null;
-            count = 0;
+            Clear();
         }
-        public void AddNodeToFront(int data)
+
+        public LinkedList(T data)
         {
-            LinkedLinkNode node = new LinkedLinkNode(data);
-            node.next = head;
-            head = node;
-            count++;
+            var item = new DataItem<T>(data);
+            SetHeadAndLastNode(item);
         }
-        public void PrintList()
+
+        public void Add(T data)
         {
-            LinkedLinkNode runner = head;
-            while(runner != null)
+            var item = new DataItem<T>(data);
+            if (LastNode != null)
             {
-                Console.WriteLine(runner.data);
-                runner = runner.next;
+                LastNode.Next = item;
+                LastNode = item;
+                Count++;
             }
-        }    
-        public void RemoveNode(int data)
-        {           
-            if (head != null)
+            else
             {
-                if (head.data.Equals(data))
+                SetHeadAndLastNode(item);
+            }
+        }
+
+        private void SetHeadAndLastNode(DataItem<T> item)
+        {
+            Head = item;
+            LastNode = item;
+            Count = 1;
+        }
+
+        public void Delete(T data)
+        {
+            if (Head != null)
+            {
+                if (Head.Data.Equals(data))
                 {
-                    head = head.next;
-                    count--;
-                    return;
+                    Head = Head.Next;
+                    Count--;
                 }
-                var current = head.next;
-                var previous = head;
-                while(current != null)
+
+                var current = Head.Next;
+                var previous = Head;
+
+                while (current != null)
                 {
-                    if (current.data.Equals(data))
+                    if (current.Data.Equals(data))
                     {
-                        previous.next = current.next;
-                        count--;
+                        previous.Next = current.Next;
+                        Count--;
+                        return;
                     }
+
+                    previous = current;
+                    current = current.Next;
                 }
             }
+        }
+
+        public void Clear()
+        {
+            DeleteAllDataItems();
+        }
+
+        private void DeleteAllDataItems()
+        {
+            Head = null;
+            LastNode = null;
+            Count = 0;
+        }
+
+        public IEnumerator<T> GetEnumerator()
+        {
+            var current = Head;
+            while (current != null)
+            {
+                yield return current.Data;
+                current = current.Next;
+
+            }
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return ((IEnumerable)this).GetEnumerator();
         }
     }
 }
